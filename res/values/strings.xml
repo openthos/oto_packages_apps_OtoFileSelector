@@ -5,10 +5,18 @@
     <string name="save">save</string>
     <string name="open">open</string>
     <string name="modify">Modify</string>
-    <string name="computer">Computer</string>
     <string name="new_dir">New folder</string>
     <string name="new_file_name_can_not_null">The name of the new folder can not be empty</string>
     <string name="please_select_a_file">Please select a file</string>
     <string name="please_enter_the_name_of_the_file">Please enter the name of the file</string>
     <string name="only_select_folders">Only can select a folder</string>
+
+    <string name="video">Video</string>
+    <string name="picture">Picture</string>
+    <string name="desk">Desktop</string>
+    <string name="music">Music</string>
+    <string name="computer">Computer</string>
+    <string name="download">Download</string>
+    <string name="document">Document</string>
+    <string name="recycle">Recycle</string>
 </resources>

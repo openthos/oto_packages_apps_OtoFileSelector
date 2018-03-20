@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_desk"
+        style="@style/LeftTextStyle"
+        android:drawableLeft="@drawable/left_desk_selector"
+        android:text="@string/desk"/>
+
+    <TextView
+        android:id="@+id/tv_music"
+        style="@style/LeftTextStyle"
+        android:drawableLeft="@drawable/left_music_selector"
+        android:text="@string/music"/>
+
+    <TextView
+        android:id="@+id/tv_video"
+        style="@style/LeftTextStyle"
+        android:drawableLeft="@drawable/left_video_selector"
+        android:text="@string/video"/>
+
+    <TextView
+        android:id="@+id/tv_picture"
+        style="@style/LeftTextStyle"
+        android:drawableLeft="@drawable/left_picture_selector"
+        android:text="@string/picture"/>
+
+    <TextView
+        android:id="@+id/tv_document"
+        style="@style/LeftTextStyle"
+        android:drawableLeft="@drawable/left_document_selector"
+        android:text="@string/document"/>
+
+    <TextView
+        android:id="@+id/tv_download"
+        style="@style/LeftTextStyle"
+        android:drawableLeft="@drawable/left_download_selector"
+        android:text="@string/download"/>
+
+    <TextView
+        android:id="@+id/tv_recycle"
+        style="@style/LeftTextStyle"
+        android:drawableLeft="@drawable/left_recycle_selector"
+        android:text="@string/recycle"/>
+</LinearLayout>

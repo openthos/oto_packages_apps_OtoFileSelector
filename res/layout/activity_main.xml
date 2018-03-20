@@ -39,22 +39,32 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/padding_one"
-                android:background="@color/line"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/device_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
+                <include layout="@layout/left_common_directory"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_one"
+                    android:background="@color/line"/>
+
+                <ListView
+                    android:id="@+id/device_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/padding_five"
+                    android:divider="@color/main_bg"
+                    android:dividerHeight="@dimen/padding_five"/>
+            </LinearLayout>
+        </ScrollView>
 
         <View
             android:layout_width="@dimen/padding_one"

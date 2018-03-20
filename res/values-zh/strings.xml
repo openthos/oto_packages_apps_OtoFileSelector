@@ -5,10 +5,18 @@
     <string name="save">保存</string>
     <string name="open">打开</string>
     <string name="modify">修改</string>
-    <string name="computer">计算机</string>
     <string name="new_dir">新建文件夹</string>
     <string name="new_file_name_can_not_null">新建文件夹的名称不能为空</string>
     <string name="please_select_a_file">Please select a file</string>
     <string name="please_enter_the_name_of_the_file">请输入文件的名称</string>
     <string name="only_select_folders">只能选择一个文件夹</string>
+
+    <string name="video">视频</string>
+    <string name="picture">图片</string>
+    <string name="desk">桌面</string>
+    <string name="music">音乐</string>
+    <string name="computer">计算机</string>
+    <string name="download">下载</string>
+    <string name="document">文档</string>
+    <string name="recycle">回收站</string>
 </resources>

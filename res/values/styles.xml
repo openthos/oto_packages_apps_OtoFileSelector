@@ -17,6 +17,21 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="LeftTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/iten_height</item>
+        <item name="android:layout_marginTop">@dimen/padding_five</item>
+        <item name="android:background">@drawable/file_layout_bg_selector</item>
+        <item name="android:textColor">@drawable/left_text_color_selector</item>
+        <item name="android:drawablePadding">@dimen/padding_ten</item>
+        <item name="android:textSize">@dimen/common_text_size</item>
+        <item name="android:paddingLeft">@dimen/padding_five</item>
+        <item name="android:paddingRight">@dimen/padding_five</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
     <style name="DialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

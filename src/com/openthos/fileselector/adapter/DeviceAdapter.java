@@ -68,6 +68,10 @@ public class DeviceAdapter extends BasicAdapter {
         mFileClick = fileClick;
     }
 
+    public View getSelectView() {
+        return mLastLayout;
+    }
+
     private class ViewHolder implements View.OnTouchListener {
         private LinearLayout layout;
         private ImageView img;
@@ -96,12 +100,12 @@ public class DeviceAdapter extends BasicAdapter {
                                 mFileClick.onClick(v);
                             }
                         }
-                        if (mLastLayout == null) {
-                            v.setSelected(true);
-                        } else if (mLastLayout != v) {
-                            mLastLayout.setSelected(false);
-                            v.setSelected(true);
-                        }
+//                        if (mLastLayout == null) {
+//                            v.setSelected(true);
+//                        } else if (mLastLayout != v) {
+//                            mLastLayout.setSelected(false);
+//                            v.setSelected(true);
+//                        }
                         mLastLayout = v;
                         mLastTime = System.currentTimeMillis();
                         break;

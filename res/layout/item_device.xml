@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/img"
-            android:layout_width="@dimen/img_size"
-            android:layout_height="@dimen/img_size"
+            android:layout_width="@dimen/padding_ten"
+            android:layout_height="@dimen/padding_ten"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/padding_five"
             android:src="@mipmap/computer"/>

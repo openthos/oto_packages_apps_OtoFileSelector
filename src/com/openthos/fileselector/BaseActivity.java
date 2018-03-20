@@ -1,17 +1,16 @@
 package com.openthos.fileselector;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+
+import com.openthos.fileselector.app.Constants;
 
 import java.io.File;
 
 public abstract class BaseActivity extends FragmentActivity {
-    public static final String ROOT_PATH =
-            Environment.getExternalStorageDirectory().getAbsolutePath();
     private String mCurrentPath;
-    private String mLastPath;
+    private String ROOT_PATH = Constants.ROOT_PATH;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

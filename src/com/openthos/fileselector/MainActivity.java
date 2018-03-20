@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.openthos.fileselector.adapter.DeviceAdapter;
 import com.openthos.fileselector.adapter.FileAdapter;
+import com.openthos.fileselector.app.Constants;
 import com.openthos.fileselector.bean.DeviceEntity;
 import com.openthos.fileselector.bean.OperateType;
 import com.openthos.fileselector.dialog.SaveFileDialog;
@@ -45,6 +46,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageView mNewFile;
     private ListView mDeviceList;
     private ListView mFileList;
+    private View mLastDeviceView;
+
+    private TextView mDesktop;
+    private TextView mMusic;
+    private TextView mVideo;
+    private TextView mPicture;
+    private TextView mDocument;
+    private TextView mDownload;
+    private TextView mRecycle;
+    private View[] mLeftBarView;
 
     @Override
     public int getLayoutId() {
@@ -62,12 +73,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mNewFile = (ImageView) findViewById(R.id.new_file);
         mDeviceList = (ListView) findViewById(R.id.device_list);
         mFileList = (ListView) findViewById(R.id.file_list);
+
+        mDesktop = (TextView) findViewById(R.id.tv_desk);
+        mMusic = (TextView) findViewById(R.id.tv_music);
+        mVideo = (TextView) findViewById(R.id.tv_video);
+        mPicture = (TextView) findViewById(R.id.tv_picture);
+        mDocument = (TextView) findViewById(R.id.tv_document);
+        mDownload = (TextView) findViewById(R.id.tv_download);
+        mRecycle = (TextView) findViewById(R.id.tv_recycle);
     }
 
     @Override
     public void initData() {
         mDeviceDatas = new ArrayList<>();
         mFileDatas = new ArrayList<>();
+        mLeftBarView = new View[]{
+                mDesktop, mMusic, mVideo, mPicture, mDocument, mDownload, mRecycle};
         mDeviceAdapter = new DeviceAdapter(this, mDeviceDatas);
         mFileAdapter = new FileAdapter(this, mFileDatas);
         mDeviceList.setAdapter(mDeviceAdapter);
@@ -84,6 +105,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mOperateType = OperateType.OPEN;
             mNameLayout.setVisibility(View.GONE);
             mSave.setText(getString(R.string.open));
+
         }
     }
 
@@ -93,6 +115,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mNewFile.setOnClickListener(this);
         mSave.setOnClickListener(this);
         mCancel.setOnClickListener(this);
+        for (int i = 0; i < mLeftBarView.length; i++) {
+            mLeftBarView[i].setOnClickListener(this);
+        }
         mFileAdapter.setOnFileClick(new OnFileClick() {
             @Override
             public void onClick(View view) {
@@ -107,7 +132,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 File file = (File) view.getTag();
                 if (file.isDirectory()) {
                     setCurrentPath(file.getAbsolutePath());
-                    loadFileInfos();
                 }
                 if (mOperateType == OperateType.OPEN && file.isFile()) {
                     setForResult(file);
@@ -121,23 +145,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDeviceAdapter.setOnFileClick(new OnFileClick() {
             @Override
             public void onClick(View view) {
-                dirClick((String) view.getTag());
+                setCurrentPath((String) view.getTag());
+                setSelectDeviceView(view);
             }
 
             @Override
             public void onDoubleClick(View view) {
-                dirClick((String) view.getTag());
+                setCurrentPath((String) view.getTag());
+                setSelectDeviceView(view);
             }
         });
     }
 
-    private void dirClick(String path) {
-        setCurrentPath(path);
-        loadFileInfos();
-    }
-
     public void setCurrentPath(String currentPath) {
         super.setCurrentPath(currentPath);
+        loadFileInfos();
         mSelectPath.setText(currentPath);
     }
 
@@ -145,7 +167,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDeviceDatas.clear();
         DeviceEntity entity = new DeviceEntity();
         entity.setName(getString(R.string.computer));
-        entity.setDevicePath(ROOT_PATH);
+        entity.setDevicePath(Constants.ROOT_PATH);
         mDeviceDatas.add(entity);
         mDeviceAdapter.refresh();
     }
@@ -184,7 +206,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.back:
                 setCurrentPath(getLastPath());
-                loadFileInfos();
                 break;
             case R.id.new_file:
                 SaveFileDialog dialog = SaveFileDialog.getInstance(this);
@@ -236,9 +257,36 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         setForResult(selectFile);
                     } else {
                         setCurrentPath(selectFile.getAbsolutePath());
-                        loadFileInfos();
                     }
                 }
+                break;
+            case R.id.tv_desk:
+                setCurrentPath(Constants.DESKTOP_PATH);
+                setSelectDeviceView(mDesktop);
+                break;
+            case R.id.tv_music:
+                setCurrentPath(Constants.MUSIC_PATH);
+                setSelectDeviceView(mMusic);
+                break;
+            case R.id.tv_video:
+                setCurrentPath(Constants.VIDEOS_PATH);
+                setSelectDeviceView(mVideo);
+                break;
+            case R.id.tv_picture:
+                setCurrentPath(Constants.PICTURES_PATH);
+                setSelectDeviceView(mPicture);
+                break;
+            case R.id.tv_document:
+                setCurrentPath(Constants.DOCUMENT_PATH);
+                setSelectDeviceView(mDocument);
+                break;
+            case R.id.tv_download:
+                setCurrentPath(Constants.DOWNLOAD_PATH);
+                setSelectDeviceView(mDownload);
+                break;
+            case R.id.tv_recycle:
+                setCurrentPath(Constants.RECYCLE_PATH);
+                setSelectDeviceView(mRecycle);
                 break;
         }
 
@@ -254,5 +302,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setSelectDeviceView(View currentView) {
+        if (mLastDeviceView != null && mLastDeviceView != currentView) {
+            mLastDeviceView.setSelected(false);
+        }
+        currentView.setSelected(true);
+        mLastDeviceView = currentView;
     }
 }
