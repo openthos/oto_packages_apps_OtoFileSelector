@@ -14,5 +14,6 @@ public class Constants {
     public static final String RECYCLE_PATH = ROOT_PATH + "/Recycle";
 
     public static final int DOUBLE_CLICK_TIME = 500;
+    public static final int USB_REFRESH_TIME = 1000;
     public static final int HEIGHT_MASK = 0x3fffffff;
 }

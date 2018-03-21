@@ -54,7 +54,7 @@ public class DeviceAdapter extends BasicAdapter {
         }
         DeviceEntity deviceEntity = mData.get(position);
         holder.name.setText(deviceEntity.getName());
-        holder.img.setImageResource(deviceEntity.getDeviceIcon());
+        holder.img.setBackgroundResource(deviceEntity.getDeviceIcon());
         holder.layout.setTag(deviceEntity.getDevicePath());
         return convertView;
     }

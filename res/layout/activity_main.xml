@@ -51,12 +51,7 @@
 
                 <include layout="@layout/left_common_directory"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/padding_one"
-                    android:background="@color/line"/>
-
-                <ListView
+                <com.openthos.fileselector.view.CustomListView
                     android:id="@+id/device_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

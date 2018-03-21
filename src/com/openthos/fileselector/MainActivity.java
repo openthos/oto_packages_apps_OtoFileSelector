@@ -2,8 +2,12 @@ package com.openthos.fileselector;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -18,7 +22,9 @@ import com.openthos.fileselector.app.Constants;
 import com.openthos.fileselector.bean.DeviceEntity;
 import com.openthos.fileselector.bean.OperateType;
 import com.openthos.fileselector.dialog.SaveFileDialog;
+import com.openthos.fileselector.utils.DeviceUtils;
 import com.openthos.fileselector.utils.ToastUtils;
+import com.openthos.fileselector.view.CustomListView;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -30,12 +36,14 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private OperateType mOperateType;
+    private Handler mHandler;
 
     private List<DeviceEntity> mDeviceDatas;
     private List<File> mFileDatas;
 
     private DeviceAdapter mDeviceAdapter;
     private FileAdapter mFileAdapter;
+    private UsbConnectReceiver mUsbConnectReceiver;
 
     private LinearLayout mNameLayout;
     private EditText mFileName;
@@ -44,7 +52,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView mCancel;
     private ImageView mBack;
     private ImageView mNewFile;
-    private ListView mDeviceList;
+    private CustomListView mDeviceList;
     private ListView mFileList;
     private View mLastDeviceView;
 
@@ -55,6 +63,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView mDocument;
     private TextView mDownload;
     private TextView mRecycle;
+    private TextView mComputer;
     private View[] mLeftBarView;
 
     @Override
@@ -71,7 +80,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mCancel = (TextView) findViewById(R.id.cancel);
         mBack = (ImageView) findViewById(R.id.back);
         mNewFile = (ImageView) findViewById(R.id.new_file);
-        mDeviceList = (ListView) findViewById(R.id.device_list);
+        mDeviceList = (CustomListView) findViewById(R.id.device_list);
         mFileList = (ListView) findViewById(R.id.file_list);
 
         mDesktop = (TextView) findViewById(R.id.tv_desk);
@@ -81,21 +90,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDocument = (TextView) findViewById(R.id.tv_document);
         mDownload = (TextView) findViewById(R.id.tv_download);
         mRecycle = (TextView) findViewById(R.id.tv_recycle);
+        mComputer = (TextView) findViewById(R.id.tv_computer);
     }
 
     @Override
     public void initData() {
+        mHandler = new Handler();
         mDeviceDatas = new ArrayList<>();
         mFileDatas = new ArrayList<>();
         mLeftBarView = new View[]{
-                mDesktop, mMusic, mVideo, mPicture, mDocument, mDownload, mRecycle};
+                mDesktop, mMusic, mVideo, mPicture, mDocument, mDownload, mRecycle, mComputer};
         mDeviceAdapter = new DeviceAdapter(this, mDeviceDatas);
         mFileAdapter = new FileAdapter(this, mFileDatas);
         mDeviceList.setAdapter(mDeviceAdapter);
         mFileList.setAdapter(mFileAdapter);
+        mUsbConnectReceiver = new UsbConnectReceiver(this);
+
+        setCurrentPath(Constants.ROOT_PATH);
+        setSelectDeviceView(mComputer);
+
         loadDeviceInfos();
         loadFileInfos();
-        mSelectPath.setText(getCurrentPath());
+
         String type = getIntent().getStringExtra("type");
         if (!TextUtils.isEmpty(type) && type.equals("save")) {
             mOperateType = OperateType.SAVE;
@@ -105,7 +121,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mOperateType = OperateType.OPEN;
             mNameLayout.setVisibility(View.GONE);
             mSave.setText(getString(R.string.open));
-
         }
     }
 
@@ -165,10 +180,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void loadDeviceInfos() {
         mDeviceDatas.clear();
-        DeviceEntity entity = new DeviceEntity();
-        entity.setName(getString(R.string.computer));
-        entity.setDevicePath(Constants.ROOT_PATH);
-        mDeviceDatas.add(entity);
+        mDeviceDatas.addAll(DeviceUtils.getUsbList());
         mDeviceAdapter.refresh();
     }
 
@@ -288,6 +300,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 setCurrentPath(Constants.RECYCLE_PATH);
                 setSelectDeviceView(mRecycle);
                 break;
+            case R.id.tv_computer:
+                setCurrentPath(Constants.ROOT_PATH);
+                setSelectDeviceView(mComputer);
+                break;
         }
 
     }
@@ -310,5 +326,54 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         currentView.setSelected(true);
         mLastDeviceView = currentView;
+    }
+
+    @Override
+    protected void onStart() {
+        mUsbConnectReceiver.registerReceiver();
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mUsbConnectReceiver != null) {
+            mUsbConnectReceiver.unregisterReceiver();
+        }
+        super.onDestroy();
+    }
+
+    public class UsbConnectReceiver extends BroadcastReceiver {
+        private MainActivity mActivity;
+        private IntentFilter filter;
+
+        public UsbConnectReceiver(Context context) {
+            mActivity = (MainActivity) context;
+            filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_MEDIA_CHECKING);
+            filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
+            filter.addAction(Intent.ACTION_MEDIA_EJECT);
+            filter.addAction(Intent.ACTION_MEDIA_REMOVED);
+            filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+
+            filter.addDataScheme("file");
+        }
+
+        public Intent registerReceiver() {
+            return mActivity.registerReceiver(this, this.filter);
+        }
+
+        public void unregisterReceiver() {
+            mActivity.unregisterReceiver(this);
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadDeviceInfos();
+                }
+            }, Constants.USB_REFRESH_TIME);
+        }
     }
 }

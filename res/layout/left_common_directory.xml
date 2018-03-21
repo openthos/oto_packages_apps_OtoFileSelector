@@ -46,4 +46,15 @@
         style="@style/LeftTextStyle"
         android:drawableLeft="@drawable/left_recycle_selector"
         android:text="@string/recycle"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_one"
+        android:background="@color/line"/>
+
+    <TextView
+        android:id="@+id/tv_computer"
+        style="@style/LeftTextStyle"
+        android:drawableLeft="@drawable/left_computer_selector"
+        android:text="@string/computer"/>
 </LinearLayout>
