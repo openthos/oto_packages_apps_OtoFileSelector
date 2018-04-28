@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.openthos.fileselector.R;
 
 public class SaveFileDialog extends Dialog implements View.OnClickListener {
-    private static SaveFileDialog mSaveFileDialog;
+    public static SaveFileDialog mSaveFileDialog;
     private OnSaveFileDialogListener mDialogListener;
     private TextView mTitle;
     private EditText mDirName;

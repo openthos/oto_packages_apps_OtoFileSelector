@@ -69,7 +69,7 @@ public class FileAdapter extends BasicAdapter {
         }
         holder.name.setText(file.getName());
         holder.modify.setText(Tools.transformTimeStr(file.lastModified()));
-        holder.layout.setTag(file);
+        holder.layout.setTag(position);
         return convertView;
     }
 
@@ -124,11 +124,11 @@ public class FileAdapter extends BasicAdapter {
                                 System.currentTimeMillis() - mLastTime < Constants.DOUBLE_CLICK_TIME) {
                             //double click
                             if (mFileClick != null) {
-                                mFileClick.onDoubleClick(v);
+                                mFileClick.onDoubleClick(v, (Integer) v.getTag());
                             }
                         } else {
                             if (mFileClick != null) {
-                                mFileClick.onClick(v);
+                                mFileClick.onClick(v, (Integer) v.getTag());
                             }
                         }
                         if (mLastLayout == null) {

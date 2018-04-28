@@ -135,16 +135,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         mFileAdapter.setOnFileClick(new OnFileClick() {
             @Override
-            public void onClick(View view) {
-                File file = (File) view.getTag();
+            public void onClick(View view, int position) {
+                File file = mFileDatas.get(position);
                 if (file.isFile()) {
                     mFileName.setText(file.getName());
                 }
             }
 
             @Override
-            public void onDoubleClick(View view) {
-                File file = (File) view.getTag();
+            public void onDoubleClick(View view, int position) {
+                File file = mFileDatas.get(position);
                 if (file.isDirectory()) {
                     setCurrentPath(file.getAbsolutePath());
                 }
@@ -159,15 +159,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mDeviceAdapter.setOnFileClick(new OnFileClick() {
             @Override
-            public void onClick(View view) {
-                setCurrentPath((String) view.getTag());
+            public void onClick(View view, int position) {
+                setCurrentPath(mDeviceDatas.get(position).getDevicePath());
                 setSelectDeviceView(view);
             }
 
             @Override
-            public void onDoubleClick(View view) {
-                setCurrentPath((String) view.getTag());
-                setSelectDeviceView(view);
+            public void onDoubleClick(View view, int position) {
             }
         });
     }
@@ -339,6 +337,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (mUsbConnectReceiver != null) {
             mUsbConnectReceiver.unregisterReceiver();
         }
+        SaveFileDialog.mSaveFileDialog = null;
         super.onDestroy();
     }
 

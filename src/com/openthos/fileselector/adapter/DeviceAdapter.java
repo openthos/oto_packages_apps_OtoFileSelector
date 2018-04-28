@@ -55,7 +55,7 @@ public class DeviceAdapter extends BasicAdapter {
         DeviceEntity deviceEntity = mData.get(position);
         holder.name.setText(deviceEntity.getName());
         holder.img.setBackgroundResource(deviceEntity.getDeviceIcon());
-        holder.layout.setTag(deviceEntity.getDevicePath());
+        holder.layout.setTag(position);
         return convertView;
     }
 
@@ -93,11 +93,11 @@ public class DeviceAdapter extends BasicAdapter {
                                 System.currentTimeMillis() - mLastTime < Constants.DOUBLE_CLICK_TIME) {
                             //double click
                             if (mFileClick != null) {
-                                mFileClick.onDoubleClick(v);
+                                mFileClick.onDoubleClick(v, (Integer) v.getTag());
                             }
                         } else {
                             if (mFileClick != null) {
-                                mFileClick.onClick(v);
+                                mFileClick.onClick(v, (Integer) v.getTag());
                             }
                         }
 //                        if (mLastLayout == null) {
