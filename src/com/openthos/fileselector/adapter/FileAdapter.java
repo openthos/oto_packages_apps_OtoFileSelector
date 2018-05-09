@@ -24,6 +24,7 @@ public class FileAdapter extends BasicAdapter {
     private List<File> mData;
     private View mLastLayout;
     private long mLastTime;
+    private File mSelectFile;
     private OnFileClick mFileClick;
 
     public FileAdapter(Context context, List<File> data) {
@@ -90,11 +91,12 @@ public class FileAdapter extends BasicAdapter {
             mLastLayout.setSelected(false);
             mLastLayout = null;
         }
+        mSelectFile = null;
         notifyDataSetChanged();
     }
 
     public File getSelectFile() {
-        return mLastLayout == null ? null : (File) mLastLayout.getTag();
+        return mSelectFile;
     }
 
     public void setOnFileClick(OnFileClick fileClick) {
@@ -120,15 +122,17 @@ public class FileAdapter extends BasicAdapter {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 switch (event.getButtonState()) {
                     case MotionEvent.BUTTON_PRIMARY:
+                        Integer position = (Integer) v.getTag();
+                        mSelectFile = mData.get(position);
                         if (v == mLastLayout &&
                                 System.currentTimeMillis() - mLastTime < Constants.DOUBLE_CLICK_TIME) {
                             //double click
                             if (mFileClick != null) {
-                                mFileClick.onDoubleClick(v, (Integer) v.getTag());
+                                mFileClick.onDoubleClick(v, position);
                             }
                         } else {
                             if (mFileClick != null) {
-                                mFileClick.onClick(v, (Integer) v.getTag());
+                                mFileClick.onClick(v, position);
                             }
                         }
                         if (mLastLayout == null) {

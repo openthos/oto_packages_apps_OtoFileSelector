@@ -140,6 +140,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (file.isFile()) {
                     mFileName.setText(file.getName());
                 }
+                mFileList.setSelection(position);
             }
 
             @Override
@@ -147,6 +148,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 File file = mFileDatas.get(position);
                 if (file.isDirectory()) {
                     setCurrentPath(file.getAbsolutePath());
+                    return;
                 }
                 if (mOperateType == OperateType.OPEN && file.isFile()) {
                     setForResult(file);
